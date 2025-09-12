@@ -120,7 +120,17 @@ void CaptureCommand(usercmd_s *const cmd)
     RecordedCmd recorded_cmd;
     recorded_cmd.serverTime = cmd->serverTime;
     recorded_cmd.buttons = cmd->buttons;
-    recorded_cmd.angles[PITCH] = static_cast<short>(cmd->angles[PITCH]) + ANGLE2SHORT(ps->delta_angles[PITCH]);
+
+    short pitch = static_cast<short>(cmd->angles[PITCH]) + ANGLE2SHORT(ps->delta_angles[PITCH]);
+
+    // Clamp pitch to 70 degrees down (positive pitch = looking down)
+    // 70 degrees = 12743 units (32768 units = 180 degrees)
+    // TODO: compute this based on the pitch dvar
+    const short MAX_PITCH_DOWN = 12743;
+    if (pitch > MAX_PITCH_DOWN)
+        pitch = MAX_PITCH_DOWN;
+
+    recorded_cmd.angles[PITCH] = pitch;
     recorded_cmd.angles[YAW] = static_cast<short>(cmd->angles[YAW]) + ANGLE2SHORT(ps->delta_angles[YAW]);
     recorded_cmd.angles[ROLL] = static_cast<short>(cmd->angles[ROLL]) + ANGLE2SHORT(ps->delta_angles[ROLL]);
     recorded_cmd.weapon = cmd->weapon;
