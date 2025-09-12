@@ -12,6 +12,8 @@ init()
     SetDvar("scr_game_forceuav", 0); // Disable compass
     SetDvar("ui_drawCrosshair", 0);
 
+    SetDvar("r_fog", 0);
+
     SetDvar("player_sprintUnlimited", 1);
     SetDvar("jump_slowdownEnable", 0);
 
@@ -211,8 +213,8 @@ MonitorButtons()
             else
             {
                 // Load last position immediately
+                self LoadPosition();
                 savenum = self.cj.saves.size;
-                self LoadPosition(savenum);
                 // If user holds the button, load previous positions when pressing use
                 while (self SecondaryOffhandButtonPressed())
                 {
@@ -242,16 +244,26 @@ MonitorPlayerCommands()
     if (!IsDefined(self.cj_commands_initialized) || self.cj_commands_initialized != true)
     {
         self NotifyOnPlayerCommand("dpad_up", "+actionslot 1");
+        self NotifyOnPlayerCommand("dpad_down", "+actionslot 2");
+        self NotifyOnPlayerCommand("dpad_right", "+actionslot 4");
+
         self.cj_commands_initialized = true;
     }
 
     for (;;)
     {
-        button = self common_scripts\utility::waittill_any_return("dpad_up", "dpad_right");
+        button = self common_scripts\utility::waittill_any_return("dpad_up", "dpad_down", "dpad_right");
         switch (button)
         {
         case "dpad_up":
             self SpawnBot();
+            break;
+        // TODO: remove once we have added .cfg loading
+        case "dpad_down":
+            exec("togglerecord");
+            break;
+        case "dpad_right":
+            exec("startplayback");
             break;
         default:
             iprintln("^1Unknown button " + button);
