@@ -168,6 +168,120 @@ struct ScriptFile
     unsigned __int8 *bytecode;
 };
 
+struct Bounds
+{
+    float midPoint[3];
+    float halfSize[3];
+};
+
+struct TriggerModel
+{
+    int contents;
+    unsigned __int16 hullCount;
+    unsigned __int16 firstHull;
+};
+
+struct TriggerHull
+{
+    Bounds bounds;
+    int contents;
+    unsigned __int16 slabCount;
+    unsigned __int16 firstSlab;
+};
+
+struct TriggerSlab
+{
+    float dir[3];
+    float midPoint;
+    float halfSize;
+};
+
+struct MapTriggers
+{
+    unsigned int count;
+    TriggerModel *models;
+    unsigned int hullCount;
+    TriggerHull *hulls;
+    unsigned int slabCount;
+    TriggerSlab *slabs;
+};
+
+struct ClientTriggerAabbNode
+{
+    Bounds bounds;
+    unsigned __int16 firstChild;
+    unsigned __int16 childCount;
+};
+
+struct ClientTriggers
+{
+    MapTriggers trigger;
+    unsigned __int16 numClientTriggerNodes;
+    ClientTriggerAabbNode *clientTriggerAabbTree;
+    unsigned int triggerStringLength;
+    char *triggerString;
+    unsigned __int16 *triggerStringOffsets;
+    unsigned __int8 *triggerType;
+    float (*origins)[3];
+    float *scriptDelay;
+    __int16 *audioTriggers;
+};
+
+struct MapEnts
+{
+    const char *name;
+    char *entityString;
+    int numEntityChars;
+    MapTriggers trigger;
+    ClientTriggers clientTrigger;
+};
+
+struct cLeaf_t
+{
+    unsigned __int16 firstCollAabbIndex;
+    unsigned __int16 collAabbCount;
+    int brushContents;
+    int terrainContents;
+    Bounds bounds;
+    int leafBrushNode;
+};
+
+struct ClipInfo;
+
+struct cmodel_t
+{
+    Bounds bounds;
+    float radius;
+    ClipInfo *info;
+    cLeaf_t leaf;
+};
+
+struct GfxBrushModelWritable
+{
+    Bounds bounds;
+};
+
+struct GfxBrushModel
+{
+    GfxBrushModelWritable writable;
+    Bounds bounds;
+    float radius;
+    unsigned __int16 surfaceCount;
+    unsigned __int16 startSurfIndex;
+};
+
+struct AddonMapEnts
+{
+    const char *name;
+    char *entityString;
+    int numEntityChars;
+    MapTriggers trigger;
+    ClipInfo *info;
+    unsigned int numSubModels;
+    cmodel_t *cmodels;
+    GfxBrushModel *models;
+};
+
 union XAssetHeader
 {
     // PhysPreset *physPreset;
@@ -189,7 +303,7 @@ union XAssetHeader
     // GlassWorld *glassWorld;
     // PathData *pathData;
     // VehicleTrack *vehicleTrack;
-    // MapEnts *mapEnts;
+    MapEnts *mapEnts;
     // FxWorld *fxWorld;
     // GfxWorld *gfxWorld;
     // GfxLightDef *lightDef;
@@ -210,7 +324,7 @@ union XAssetHeader
     // StructuredDataDefSet *structuredDataDefSet;
     // TracerDef *tracerDef;
     // VehicleDef *vehDef;
-    // AddonMapEnts *addonMapEnts;
+    AddonMapEnts *addonMapEnts;
     void *data;
 };
 
@@ -1252,12 +1366,6 @@ struct entityState_s
     clientLinkInfo_t clientLinkInfo;
     unsigned int partBits[6];
     int clientMask[1];
-};
-
-struct Bounds
-{
-    float midPoint[3];
-    float halfSize[3];
 };
 
 struct entityShared_t
