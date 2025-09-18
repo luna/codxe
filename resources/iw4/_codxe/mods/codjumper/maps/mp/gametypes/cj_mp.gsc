@@ -138,7 +138,17 @@ RPGSwitch()
             continue;
 
         self.cj.rpg_switched = true;
-        self SwitchToWeapon("deserteaglegold_mp");
+
+        weapons = self getweaponslistall();
+        foreach (weapon in weapons)
+        {
+            if (weapon != "rpg_mp")
+            {
+                self SwitchToWeapon(weapon);
+                break;
+            }
+        }
+
         wait 0.5;
         self SetWeaponAmmoClip("rpg_mp", 1);
     }

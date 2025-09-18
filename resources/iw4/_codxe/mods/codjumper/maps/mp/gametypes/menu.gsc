@@ -382,6 +382,8 @@ generateMenuOptions()
 
     self addMenuOption("main", "Toggle Old School Mode", ::ToggleOldschool);
 
+    self addMenuOption("main", "Cycle Pistol", ::CyclePistol);
+
     self addMenuOption("main", "Clone Menu", ::menuAction, "CHANGE_MENU", "clone_menu");
     self addMenu("clone_menu", "main");
     self addMenuOption("clone_menu", "Spawn Clone", ::AddClone);
@@ -436,4 +438,41 @@ RestoreBrushCollision()
 {
     SetDvar("noclip_brushes", "");
     IPrintLn("^2Collision restored for all brushes.");
+}
+
+CyclePistol()
+{
+    pistols = [];
+    pistols[pistols.size] = "deserteagle_mp";
+    pistols[pistols.size] = "deserteaglegold_mp";
+    pistols[pistols.size] = "usp_mp";
+    pistols[pistols.size] = "glock_mp";
+    pistols[pistols.size] = "beretta_mp";
+    pistols[pistols.size] = "coltanaconda_mp";
+
+    weapons = self getweaponslistall();
+    current_pistol = "";
+    foreach (weapon in weapons)
+    {
+        if (weapon != "rpg_mp")
+        {
+            current_pistol = weapon;
+        }
+    }
+
+    foreach (index, pistol in pistols)
+    {
+        if (pistol == current_pistol)
+        {
+            next_index = (index + 1) % pistols.size;
+            next_pistol = pistols[next_index];
+            self TakeWeapon(current_pistol);
+            wait 0.05;
+            self GiveWeapon(next_pistol);
+            wait 0.05;
+            self SwitchToWeapon(next_pistol);
+            self iprintln("Switched to " + next_pistol);
+            return;
+        }
+    }
 }
