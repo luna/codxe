@@ -205,7 +205,87 @@ static auto Scr_AddSourceBuffer =
 typedef int (*Key_StringToKeynum_t)(const char *str);
 static Key_StringToKeynum_t Key_StringToKeynum = reinterpret_cast<Key_StringToKeynum_t>(0x822D69A8);
 
-static PlayerKeyState *playerKeys = reinterpret_cast<PlayerKeyState *>(0x8242AB38);
+typedef int (*Com_sprintf_t)(char *dest, unsigned int size, const char *fmt, ...);
+static Com_sprintf_t Com_sprintf = reinterpret_cast<Com_sprintf_t>(0x821CCED8);
+
+typedef void (*DB_SetXAssetName_t)(XAsset *asset, const char *name);
+static DB_SetXAssetName_t DB_SetXAssetName = reinterpret_cast<DB_SetXAssetName_t>(0x822B30D0);
+
+typedef const char *(*DB_GetXAssetName_t)(const XAsset *asset);
+static DB_GetXAssetName_t DB_GetXAssetName = reinterpret_cast<DB_GetXAssetName_t>(0x822B3490);
+
+typedef XAssetEntry *(*DB_LinkXAssetEntry_t)(XAssetEntry *newEntry, int allowOverride);
+static DB_LinkXAssetEntry_t DB_LinkXAssetEntry = reinterpret_cast<DB_LinkXAssetEntry_t>(0x8229FC50);
+
+typedef void (*DB_LoadXFileData_t)(unsigned __int8 *pos, unsigned int size);
+static DB_LoadXFileData_t DB_LoadXFileData = reinterpret_cast<DB_LoadXFileData_t>(0x822B1FC8);
+
+typedef void (*DB_AllocXBlocks_t)(const unsigned int *blockSize, const char *filename, XBlock *blocks,
+                                  unsigned int allocType);
+static DB_AllocXBlocks_t DB_AllocXBlocks = reinterpret_cast<DB_AllocXBlocks_t>(0x822A1DF0);
+
+typedef void (*Load_XAssetArrayCustom_t)(int count);
+static Load_XAssetArrayCustom_t Load_XAssetArrayCustom = reinterpret_cast<Load_XAssetArrayCustom_t>(0x822B2140);
+
+typedef void (*Load_Stream_t)(bool atStreamStart, void *ptr, size_t size);
+static Load_Stream_t Load_Stream = reinterpret_cast<Load_Stream_t>(0x8229D148);
+
+typedef void (*Load_DelayStream_t)();
+static Load_DelayStream_t Load_DelayStream = reinterpret_cast<Load_DelayStream_t>(0x8229D0F8);
+
+typedef void (*Load_XAssetHeader_t)(bool atStreamStart);
+static Load_XAssetHeader_t Load_XAssetHeader = reinterpret_cast<Load_XAssetHeader_t>(0x822B1838);
+
+struct snapshotEntityNumbers_t;
+
+typedef void (*SV_AddEntitiesVisibleFromPoint_t)(const float *org, int clientNum, snapshotEntityNumbers_t *eNums);
+static SV_AddEntitiesVisibleFromPoint_t SV_AddEntitiesVisibleFromPoint =
+    reinterpret_cast<SV_AddEntitiesVisibleFromPoint_t>(0x821FB898);
+
+typedef void (*DB_LoadXFileInternal_t)();
+static DB_LoadXFileInternal_t DB_LoadXFileInternal = reinterpret_cast<DB_LoadXFileInternal_t>(0x822B21B8);
+
+typedef void (*DB_ReadXFileStage_t)();
+static DB_ReadXFileStage_t DB_ReadXFileStage = reinterpret_cast<DB_ReadXFileStage_t>(0x822B1F60);
+
+typedef void (*DB_WaitXFileStage_t)();
+static DB_WaitXFileStage_t DB_WaitXFileStage = reinterpret_cast<DB_WaitXFileStage_t>(0x822B1DA0);
+
+typedef void (*Com_Error_t)(errorParm_t code, const char *fmt, ...);
+static Com_Error_t Com_Error = reinterpret_cast<Com_Error_t>(0x82236640);
+
+typedef void (*R_ShowDirtyDiscError_t)();
+static R_ShowDirtyDiscError_t R_ShowDirtyDiscError = reinterpret_cast<R_ShowDirtyDiscError_t>(0x82155218);
+
+typedef int (*DB_AuthLoad_InflateInit_t)(z_stream_s *stream, bool isSecure, const char *filename);
+static DB_AuthLoad_InflateInit_t DB_AuthLoad_InflateInit = reinterpret_cast<DB_AuthLoad_InflateInit_t>(0x822B2B90);
+
+typedef void (*Load_XAssetListCustom_t)();
+static Load_XAssetListCustom_t Load_XAssetListCustom = reinterpret_cast<Load_XAssetListCustom_t>(0x822B20E0);
+
+typedef void (*DB_PushStreamPos_t)(unsigned int index);
+static DB_PushStreamPos_t DB_PushStreamPos = reinterpret_cast<DB_PushStreamPos_t>(0x8229D410);
+
+typedef void (*DB_InitStreams_t)(XBlock *blocks);
+static DB_InitStreams_t DB_InitStreams = reinterpret_cast<DB_InitStreams_t>(0x8229D310);
+
+typedef void (*DB_PopStreamPos_t)();
+static DB_PopStreamPos_t DB_PopStreamPos = reinterpret_cast<DB_PopStreamPos_t>(0x8229D390);
+
+typedef void (*DB_CancelLoadXFile_t)();
+static DB_CancelLoadXFile_t DB_CancelLoadXFile = reinterpret_cast<DB_CancelLoadXFile_t>(0x822B1EC0);
+
+typedef int (*inflateInit2__t)(z_stream_s *z, int w, const char *version, int stream_size);
+static inflateInit2__t inflateInit2_ = reinterpret_cast<inflateInit2__t>(0x823527B8);
+
+typedef int (*DB_AuthLoad_Inflate_t)(z_stream_s *stream, int flush);
+static DB_AuthLoad_Inflate_t DB_AuthLoad_Inflate = reinterpret_cast<DB_AuthLoad_Inflate_t>(0x822B2F70);
+
+typedef int (*inflate_t)(z_stream_s *stream, int flush);
+static inflate_t inflate = reinterpret_cast<inflate_t>(0x82352198);
+
+typedef int (*DB_GetXAssetTypeSize_t)(XAssetType type);
+static DB_GetXAssetTypeSize_t DB_GetXAssetTypeSize = reinterpret_cast<DB_GetXAssetTypeSize_t>(0x822B30B8);
 
 // Variables
 static auto cgArray = reinterpret_cast<cg_s **>(0x823F28A0);
@@ -224,5 +304,33 @@ static auto g_entities = reinterpret_cast<gentity_s *>(0x8287CD08);
 static ScreenPlacement &scrPlaceFullUnsafe = *reinterpret_cast<ScreenPlacement *>(0x8246F468);
 static auto svsHeader = reinterpret_cast<serverStaticHeader_t *>(0x849F1580);
 static auto uiInfoArray = reinterpret_cast<uiInfo_s **>(0x849F2DF0);
+static PlayerKeyState *playerKeys = reinterpret_cast<PlayerKeyState *>(0x8242AB38);
+static unsigned __int8 **g_streamPos = reinterpret_cast<unsigned __int8 **>(0x826B91F4);
+static unsigned __int8 **g_streamPosArray = reinterpret_cast<unsigned __int8 **>(0x82708C04);
+// XBlock **g_streamBlocks = reinterpret_cast<XBlock **>(0x826AD1EC);
+// unsigned __int8 *g_streamPosIndex = reinterpret_cast<unsigned __int8 *>(0x826BA3FC);
+static unsigned *g_streamDelayIndex = reinterpret_cast<unsigned *>(0x82668D5C);
+static StreamDelayInfo *g_streamDelayArray = reinterpret_cast<StreamDelayInfo *>(0x8270C4F0);
+// unsigned __int8 *g_streamPosStackIndex = reinterpret_cast<unsigned __int8 *>(0x82668A34);
+static unsigned int *g_loadingAssets = reinterpret_cast<unsigned int *>(0x824754F4);
+static bool *g_anyFastFileLoaded = reinterpret_cast<bool *>(0x82435AB5);
+static DB_LoadData *g_load = reinterpret_cast<DB_LoadData *>(0x82475508);
+static const char **g_block_mem_name = reinterpret_cast<const char **>(0x823A42AC);
+static const char **g_assetNames = reinterpret_cast<const char **>(0x823A42C8);
+static const char **g_defaultAssetName = reinterpret_cast<const char **>(0x823A40F8);
+static const XZoneName *g_zoneNames = reinterpret_cast<XZoneName *>(0x8270BC28);
+static const unsigned int *g_zoneIndex = reinterpret_cast<const unsigned int *>(0x82536C4C);
+static XAsset **varXAsset = reinterpret_cast<XAsset **>(0x82475658);
+static XAssetHeader **varXAssetHeader = reinterpret_cast<XAssetHeader **>(0x824756E0);
+static XAssetList **varXAssetList = reinterpret_cast<XAssetList **>(0x824756F4);
+static void **DB_XAssetPool = reinterpret_cast<void **>(0x823A4070);
+static int *g_poolSize = reinterpret_cast<int *>(0x823A3E50);
+
+static int *g_trackLoadProgress = reinterpret_cast<int *>(0x824754FC);
+static int *g_totalSize = reinterpret_cast<int *>(0x824754F8);
+static int *g_loadedSize = reinterpret_cast<int *>(0x82475500);
+static int *g_totalExternalBytes = reinterpret_cast<int *>(0x82475504);
+static int *g_loadedExternalBytes = reinterpret_cast<int *>(0x8246F4AC);
+
 } // namespace mp
 } // namespace iw3

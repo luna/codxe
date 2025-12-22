@@ -2709,6 +2709,114 @@ struct PlayerKeyState
     LocSelInputState locSelInputState;
 };
 
+enum XBlockType : __int32
+{
+    XFILE_BLOCK_TEMP = 0x0,
+    XFILE_BLOCK_RUNTIME_BEGIN = 0x1,
+    XFILE_BLOCK_RUNTIME = 0x1,
+    XFILE_BLOCK_LARGE_RUNTIME = 0x2,
+    XFILE_BLOCK_PHYSICAL_RUNTIME = 0x3,
+    XFILE_BLOCK_RUNTIME_END = 0x4,
+    XFILE_BLOCK_VIRTUAL = 0x4,
+    XFILE_BLOCK_LARGE = 0x5,
+    XFILE_BLOCK_PHYSICAL = 0x6,
+    MAX_XFILE_COUNT = 0x7,
+};
+
+struct XBlock
+{
+    unsigned __int8 *data;
+    unsigned int size;
+};
+
+struct internal_state;
+
+struct _OVERLAPPED
+{
+    unsigned int Internal;
+    unsigned int InternalHigh;
+    unsigned int Offset;
+    unsigned int OffsetHigh;
+    void *hEvent;
+};
+
+struct z_stream_s
+{
+    unsigned __int8 *next_in;
+    unsigned int avail_in;
+    unsigned int total_in;
+    unsigned __int8 *next_out;
+    unsigned int avail_out;
+    unsigned int total_out;
+    char *msg;
+    internal_state *state;
+    unsigned __int8 *(__fastcall *zalloc)(unsigned __int8 *, unsigned int, unsigned int);
+    void(__fastcall *zfree)(unsigned __int8 *, unsigned __int8 *);
+    unsigned __int8 *opaque;
+    int data_type;
+};
+static_assert(sizeof(z_stream_s) == 48, "");
+
+struct DB_LoadData
+{
+    void *f;
+    const char *filename;
+    XBlock *blocks;
+    int outstandingReads;
+    _OVERLAPPED overlapped;
+    z_stream_s stream;
+    unsigned __int8 *compressBufferStart;
+    unsigned __int8 *compressBufferEnd;
+    void(__fastcall *interrupt)();
+    int allocType;
+};
+
+struct XAsset;
+
+struct ScriptStringList
+{
+    int count;
+    const char **strings;
+};
+
+struct XAssetList
+{
+    ScriptStringList stringList;
+    int assetCount;
+    XAsset *assets;
+};
+
+enum errorParm_t : __int32
+{
+    ERR_FATAL = 0x0,
+    ERR_DROP = 0x1,
+    ERR_SERVERDISCONNECT = 0x2,
+    ERR_DISCONNECT = 0x3,
+    ERR_SCRIPT = 0x4,
+    ERR_SCRIPT_DROP = 0x5,
+    ERR_LOCALIZATION = 0x6,
+    ERR_MAPLOADERRORSUMMARY = 0x7,
+};
+
+struct XFile
+{
+    unsigned int size;
+    unsigned int externalSize;
+    unsigned int blockSize[7];
+};
+
+struct XZoneName
+{
+    char name[64];
+    int flags;
+};
+
+struct StreamDelayInfo
+{
+    const void *ptr;
+    int size;
+};
+
 } // namespace mp
 } // namespace iw3
 
