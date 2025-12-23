@@ -2724,6 +2724,10 @@ generateMenuOptions()
 		self addMenuOption("bot_menu", text, ::setSelectedBot, i);
 	}
 	self addMenuOption("bot_menu", "Spawn Floating Bot", ::spawnFloatingBot);
+	self addMenuOption("bot_menu", "Auto Mantle ON/OFF", ::toggleAutoMantle);
+	self addMenuOption("bot_menu", "Trigger Distance UP", ::modifyTriggerDistance, 10);
+	self addMenuOption("bot_menu", "Trigger Distance DOWN", ::modifyTriggerDistance, -10);
+	self addMenuOption("bot_menu", "Toggle stance", ::CycleBotStance);
 	if (is_host)
 		self addMenuOption("bot_menu", "Kick All Bots", ::kickAllBots);
 
@@ -2733,27 +2737,14 @@ generateMenuOptions()
 	self addMenuOption("clone_menu", "Spawn Clone", ::addClone);
 	self addMenuOption("clone_menu", "Remove Clones", ::deleteClones);
 
-	// Enhanced submenu
+	// Barrier submenu
 	if (is_host)
 	{
-		self addMenuOption("main", "Enhanced Menu", ::menuAction, "CHANGE_MENU", "enhanced_menu"); // Add to main menu
-
-		self addMenu("enhanced_menu", "main");
-		self addMenuOption("enhanced_menu", "Barrier Menu", ::menuAction, "CHANGE_MENU", "barrier_menu");
-		self addMenuOption("enhanced_menu", "Bot Action Menu", ::menuAction, "CHANGE_MENU", "bot_action_menu");
-
-		// Barrier submenu
-		self addMenu("barrier_menu", "enhanced_menu");
+		self addMenuOption("main", "Barrier Menu", ::menuAction, "CHANGE_MENU", "barrier_menu");
+		self addMenu("barrier_menu", "main");
 		self addMenuOption("barrier_menu", "Remove All Barriers", ::RemoveAllBrushCollision);
 		self addMenuOption("barrier_menu", "Disable Collision at origin", ::disablecollisionforbrushcontainingorigin_wrapper);
 		self addMenuOption("barrier_menu", "Restore Barriers", ::RestoreBrushCollision);
-
-		// Bot Action submenu
-		self addMenu("bot_action_menu", "enhanced_menu");
-		self addMenuOption("bot_action_menu", "Auto Mantle ON/OFF", ::toggleAutoMantle);
-		self addMenuOption("bot_action_menu", "Trigger Distance UP", ::modifyTriggerDistance, 10);
-		self addMenuOption("bot_action_menu", "Trigger Distance DOWN", ::modifyTriggerDistance, -10);
-		self addMenuOption("bot_action_menu", "Toggle stance", ::CycleBotStance);
 	}
 
 	// Player model menu
