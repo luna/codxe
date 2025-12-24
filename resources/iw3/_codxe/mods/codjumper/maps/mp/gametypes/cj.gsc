@@ -2559,10 +2559,10 @@ generateMenuOptions()
 	self addMenuOption("main", "CodJumper Menu (Beta)", ::menuAction, "CHANGE_MENU", "menu_codjumper");
 	self addMenu("menu_codjumper", "main");
 	self addMenuOption("menu_codjumper", "HUD | Display player info", ::togglePlayerInfo);
+	self addMenuOption("menu_codjumper", "Crouch on Jump", ::toggleCrouchOnJump);
 	self addMenuOption("menu_codjumper", "TAS | Hold Jump BHOP", ::toggleHoldJumpBhop);
 	self addMenuOption("menu_codjumper", "TAS | Jump at Edge", ::toggleJumpAtEdge);
 	self addMenuOption("menu_codjumper", "TAS | Jump on RPG fire", ::toggleJumpOnRpgFire);
-	self addMenuOption("menu_codjumper", "TAS | Crouch on Jump", ::toggleCrouchOnJump);
 	self addMenuOption("menu_codjumper", "TAS | RPG lookdown", ::toggleRpgLookdown);
 	self addMenuOption("menu_codjumper", "TAS | RPG lookdown set angles", ::setRpgLookdownAngles);
 	self addMenuOption("menu_codjumper", "TAS | Playback ignore weapon", ::togglePlaybackIgnoreWeapon);
