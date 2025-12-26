@@ -305,6 +305,15 @@ static inflate_t inflate = reinterpret_cast<inflate_t>(0x82352198);
 typedef int (*DB_GetXAssetTypeSize_t)(XAssetType type);
 static DB_GetXAssetTypeSize_t DB_GetXAssetTypeSize = reinterpret_cast<DB_GetXAssetTypeSize_t>(0x822B30B8);
 
+typedef void (*SV_UpdateUserinfo_f_t)(client_t *cl);
+static SV_UpdateUserinfo_f_t SV_UpdateUserinfo_f = reinterpret_cast<SV_UpdateUserinfo_f_t>(0x82206240);
+
+typedef void (*Info_SetValueForKey_t)(char *s, const char *key, const char *value);
+static Info_SetValueForKey_t Info_SetValueForKey = reinterpret_cast<Info_SetValueForKey_t>(0x821CD5B0);
+
+typedef void (*ClientUserinfoChanged_t)(int clientNum);
+static ClientUserinfoChanged_t ClientUserinfoChanged = reinterpret_cast<ClientUserinfoChanged_t>(0x82284F00);
+
 // Variables
 static auto cgArray = reinterpret_cast<cg_s **>(0x823F28A0);
 static auto cgsArray = reinterpret_cast<cgs_t *>(0x823F2890);
@@ -321,6 +330,7 @@ static auto g_clients = reinterpret_cast<gclient_s *>(0x829BCD70);
 static auto g_entities = reinterpret_cast<gentity_s *>(0x8287CD08);
 static ScreenPlacement &scrPlaceFullUnsafe = *reinterpret_cast<ScreenPlacement *>(0x8246F468);
 static auto svsHeader = reinterpret_cast<serverStaticHeader_t *>(0x849F1580);
+static serverStatic_t *svs = reinterpret_cast<serverStatic_t *>(0x82EE3500);
 static auto uiInfoArray = reinterpret_cast<uiInfo_s **>(0x849F2DF0);
 static PlayerKeyState *playerKeys = reinterpret_cast<PlayerKeyState *>(0x8242AB38);
 static unsigned __int8 **g_streamPos = reinterpret_cast<unsigned __int8 **>(0x826B91F4);

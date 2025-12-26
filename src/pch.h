@@ -1,5 +1,8 @@
 #pragma once
 
+#pragma warning(disable : 4324) // structure was padded due to __declspec(align())
+#pragma warning(disable : 4480) // nonstandard extension used: specifying underlying type for enum
+
 // Standard library includes
 #include <array>
 #include <cassert>

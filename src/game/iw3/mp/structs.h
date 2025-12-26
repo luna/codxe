@@ -2,12 +2,39 @@
 
 #include "pch.h"
 
-#pragma warning(disable : 4480)
-
 namespace iw3
 {
+
+#define CONTENTS_PLAYERCLIP 0x10000
+
+#define PITCH 0
+#define YAW 1
+#define ROLL 2
+
 namespace mp
 {
+
+enum entityType_t : __int32
+{
+    ET_GENERAL = 0x0,
+    ET_PLAYER = 0x1,
+    ET_PLAYER_CORPSE = 0x2,
+    ET_ITEM = 0x3,
+    ET_MISSILE = 0x4,
+    ET_INVISIBLE = 0x5,
+    ET_SCRIPTMOVER = 0x6,
+    ET_SOUND_BLEND = 0x7,
+    ET_FX = 0x8,
+    ET_LOOP_FX = 0x9,
+    ET_PRIMARY_LIGHT = 0xA,
+    ET_MG42 = 0xB,
+    ET_HELICOPTER = 0xC,
+    ET_PLANE = 0xD,
+    ET_VEHICLE = 0xE,
+    ET_VEHICLE_COLLMAP = 0xF,
+    ET_VEHICLE_CORPSE = 0x10,
+    ET_EVENTS = 0x11,
+};
 
 enum entity_event_t : __int32
 {
@@ -908,8 +935,8 @@ struct LerpEntityState
 
 struct entityState_s
 {
-    int number; // entity index	//0x00
-    int eType;  // entityType_t	//0x04
+    int number;         // entity index	//0x00
+    entityType_t eType; // entityType_t	//0x04
 
     LerpEntityState lerp;
 
@@ -1603,9 +1630,30 @@ static_assert(offsetof(client_t, gentity) == 0x21280, "");
 
 struct clientState_s;
 struct svEntity_s;
-struct archivedEntity_s;
+struct archivedEntityShared_t
+{
+    int svFlags;
+    int clientMask[2];
+    float absmin[3];
+    float absmax[3];
+};
+
+struct archivedEntity_s
+{
+    entityState_s s;
+    archivedEntityShared_t r;
+};
 struct cachedClient_s;
-struct cachedSnapshot_t;
+struct cachedSnapshot_t
+{
+    int archivedFrame;
+    int time;
+    int num_entities;
+    int first_entity;
+    int num_clients;
+    int first_client;
+    int usesDelta;
+};
 
 /* 9766 */
 struct serverStaticHeader_t
@@ -1815,8 +1863,6 @@ struct __declspec(align(2)) cbrushside_t
     unsigned __int8 edgeCount;
 };
 
-#pragma warning(disable : 4324)
-
 /* 8961 */
 struct __declspec(align(16)) cbrush_t
 {
@@ -1830,8 +1876,6 @@ struct __declspec(align(16)) cbrush_t
     __int16 firstAdjacentSideOffsets[2][3];
     unsigned __int8 edgeCount[2][3];
 };
-
-#pragma warning(default : 4324)
 
 static_assert(sizeof(cbrush_t) == 80, "");
 
@@ -2769,12 +2813,6 @@ struct cgs_t
 };
 static_assert(sizeof(cgs_t) == 15972, "");
 
-#define CONTENTS_PLAYERCLIP 0x10000
-
-#define PITCH 0
-#define YAW 1
-#define ROLL 2
-
 struct field_t
 {
     int cursor;
@@ -2918,7 +2956,68 @@ struct StreamDelayInfo
     int size;
 };
 
+struct archivedSnapshot_s
+{
+    int start;
+    int size;
+};
+
+struct cachedClient_s
+{
+    int playerStateExists;
+    clientState_s cs;
+    playerState_s ps;
+};
+
+struct challenge_t
+{
+    netadr_t adr;
+    int challenge;
+    int time;
+    int pingTime;
+    int firstTime;
+    int firstPing;
+    int connected;
+    int guid;
+};
+
+struct tempBanSlot_t
+{
+    int guid;
+    int banTime;
+};
+
+struct __declspec(align(32)) serverStatic_t
+{
+    cachedSnapshot_t cachedSnapshotFrames[512];
+    archivedEntity_s cachedSnapshotEntities[2304];
+    int initialized;
+    int time;
+    int snapFlagServerBit;
+    client_t *clients;
+    int numSnapshotEntities;
+    int numSnapshotClients;
+    int nextSnapshotEntities;
+    int nextSnapshotClients;
+    entityState_s snapshotEntities[64512];
+    clientState_s snapshotClients[18432];
+    int nextArchivedSnapshotFrames;
+    archivedSnapshot_s archivedSnapshotFrames[1200];
+    unsigned __int8 archivedSnapshotBuffer[2097152];
+    int nextArchivedSnapshotBuffer;
+    int nextCachedSnapshotEntities;
+    int nextCachedSnapshotClients;
+    int nextCachedSnapshotFrames;
+    cachedClient_s cachedSnapshotClients[576];
+    int nextHeartbeatTime;
+    int nextStatusResponseTime;
+    challenge_t challenges[1024];
+    netProfileInfo_t OOBProf;
+    tempBanSlot_t tempBans[16];
+    unsigned __int64 xuids[24];
+    float mapCenter[3];
+};
+static_assert(sizeof(serverStatic_t) == 0x1AAE000, "");
+
 } // namespace mp
 } // namespace iw3
-
-#pragma warning(default : 4480)
