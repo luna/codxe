@@ -44,8 +44,6 @@ bool Scr_CanFreeLocalizedConfigString(unsigned int index)
 Detour Scr_PrecacheString_Detour;
 void Scr_PrecacheString_Stub()
 {
-    DbgPrint("[Scr_PrecacheString]\n");
-
     if (!level->initializing)
     {
         Scr_Error("precacheString must be called before any wait statements in the gametype or level script\n");
@@ -93,7 +91,6 @@ void HECmd_SetText_Stub(scr_entref_t entref)
 Detour Scr_FreeHudElem_Detour;
 void Scr_FreeHudElem_Hook(game_hudelem_s *hud)
 {
-    DbgPrint("[Scr_FreeHudElem]\n");
     int32_t cs_index = hud->elem.text;
     hud->elem.text = 0;
 
@@ -118,7 +115,7 @@ gsc_hud_elem::gsc_hud_elem()
         []()
         {
             //
-            memset(g_isLocStringPrecached, 0, sizeof(g_isLocStringPrecached));
+            ZeroMemory(g_isLocStringPrecached, sizeof(g_isLocStringPrecached));
         });
 }
 
