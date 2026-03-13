@@ -5,6 +5,29 @@ namespace t4
 {
 namespace mp
 {
+
+int CL_IsKeyPressed(const int localClientNum, const char *keyName)
+{
+    const int keynum = Key_StringToKeynum(keyName);
+    if (keynum >= 0)
+        return playerKeys[0].keys[keynum].down;
+    else
+        return 0;
+}
+
+void PlayerCmd_ButtonPressed(scr_entref_t entref)
+{
+    if (entref.classnum != 0)
+        Scr_ObjectError("not an entity", SCRIPTINSTANCE_SERVER);
+
+    const char *button = Scr_GetString(0, SCRIPTINSTANCE_SERVER);
+    if (!button || !*button)
+        Scr_Error("usage: <client> buttonPressed(<button name>)", SCRIPTINSTANCE_SERVER);
+
+    const int keypressed = CL_IsKeyPressed(0, button);
+    return Scr_AddInt(keypressed, SCRIPTINSTANCE_SERVER);
+}
+
 void PlayerCmd_SprintButtonPressed(scr_entref_t entref)
 {
     if (entref.classnum != 0)
@@ -134,6 +157,7 @@ static struct
     const char *name;
     BuiltinMethod handler;
 } gsc_player_methods[] = {
+    {"buttonpressed", PlayerCmd_ButtonPressed},
     {"sprintbuttonpressed", PlayerCmd_SprintButtonPressed},
     {"jumpbuttonpressed", PlayerCmd_JumpButtonPressed},
     {"setvelocity", PlayerCmd_SetVelocity},

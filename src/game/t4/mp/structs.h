@@ -962,5 +962,45 @@ static_assert(offsetof(SpawnFuncEntry, classname) == 0x0, "");
 static_assert(offsetof(SpawnFuncEntry, callback) == 0x4, "");
 
 struct UiContext;
+
+struct field_t
+{
+    int cursor;
+    int scroll;
+    int drawWidth;
+    int widthInPixels;
+    float charHeight;
+    int fixedSize;
+    char buffer[256];
+};
+static_assert(sizeof(field_t) == 0x118, "");
+
+struct KeyState
+{
+    int down;
+    int repeats;
+    const char *binding;
+    char *binding_2;
+};
+static_assert(sizeof(KeyState) == 0x10, "");
+
+enum LocSelInputState : __int32
+{
+    LOC_SEL_INPUT_NONE = 0x0,
+    LOC_SEL_INPUT_CONFIRM = 0x1,
+    LOC_SEL_INPUT_CANCEL = 0x2,
+};
+
+struct PlayerKeyState
+{
+    field_t chatField;
+    int chat_team;
+    int overstrikeMode;
+    int anyKeyDown;
+    KeyState keys[256];
+    LocSelInputState locSelInputState;
+};
+static_assert(sizeof(PlayerKeyState) == 0x1128, "");
+
 } // namespace mp
 } // namespace t4

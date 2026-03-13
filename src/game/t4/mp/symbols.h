@@ -19,6 +19,7 @@ static auto level = reinterpret_cast<level_locals_t *>(0x82D6A440);
 static auto svsHeader = reinterpret_cast<serverStaticHeader_t *>(0x84f85100);
 static auto scrVarPub = reinterpret_cast<scrVarPub_t *>(0x85AC2F00);
 static auto varclipMap_t = reinterpret_cast<clipMap_t **>(0x82756700);
+static const PlayerKeyState *playerKeys = reinterpret_cast<PlayerKeyState *>(0x826DCB60);
 
 const int NUM_BSP_ONLY_SPAWNS = 14;
 static auto s_bspOnlySpawns = reinterpret_cast<SpawnFuncEntry *>(0x82035CC0);
@@ -133,5 +134,9 @@ static auto UI_RunMenuScript =
     reinterpret_cast<void (*)(int localClientNum, const char **args, const char *actualScript)>(0x822A29B8);
 
 static auto va = reinterpret_cast<char *(*)(char *format, ...)>(0x822C38D8);
+
+typedef int (*Key_StringToKeynum_t)(const char *str);
+static Key_StringToKeynum_t Key_StringToKeynum = reinterpret_cast<Key_StringToKeynum_t>(0x821B2938);
+
 } // namespace mp
 } // namespace t4
