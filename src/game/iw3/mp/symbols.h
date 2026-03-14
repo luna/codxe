@@ -6,6 +6,28 @@ namespace iw3
 {
 namespace mp
 {
+
+#define KEY_MASK_FIRE 1
+#define KEY_MASK_SPRINT 2
+#define KEY_MASK_MELEE 4
+#define KEY_MASK_RELOAD 16
+#define KEY_MASK_LEANLEFT 64
+#define KEY_MASK_LEANRIGHT 128
+#define KEY_MASK_PRONE 256
+#define KEY_MASK_CROUCH 512
+#define KEY_MASK_JUMP 1024
+#define KEY_MASK_ADS_MODE 2048
+#define KEY_MASK_TEMP_ACTION 4096
+#define KEY_MASK_HOLDBREATH 8192
+#define KEY_MASK_FRAG 16384
+#define KEY_MASK_SMOKE 32768
+#define KEY_MASK_NIGHTVISION 262144
+#define KEY_MASK_ADS 524288
+#define KEY_MASK_USE 8
+#define KEY_MASK_USERELOAD 32
+#define BUTTON_ATTACK KEY_MASK_FIRE
+#define MAX_CLIENTS 18
+
 #define ANGLE2SHORT(x) ((int)((x) * 65536 / 360) & 65535)
 #define SHORT2ANGLE(x) ((x) * (360.0 / 65536))
 
@@ -370,6 +392,15 @@ static Scr_GetFloat_t Scr_GetFloat = reinterpret_cast<Scr_GetFloat_t>(0x8220FC18
 
 typedef int (*Scr_AddFloat_t)(float value);
 static Scr_AddFloat_t Scr_AddFloat = reinterpret_cast<Scr_AddFloat_t>(0x82211148);
+
+typedef const char *(*SL_ConvertToString_t)(unsigned int stringValue);
+static SL_ConvertToString_t SL_ConvertToString = reinterpret_cast<SL_ConvertToString_t>(0x8221EF30);
+
+typedef void (*LinkThread_t)(unsigned int threadId, void *pos, bool allowFarCall);
+static LinkThread_t LinkThread = reinterpret_cast<LinkThread_t>(0x82223E48);
+
+typedef void (*CompileError2_t)(char *codePos, const char *msg, ...);
+static CompileError2_t CompileError2 = reinterpret_cast<CompileError2_t>(0x82220AE8);
 
 typedef void (*SV_DropClient_t)(client_t *drop, const char *reason, bool tellThem);
 static SV_DropClient_t SV_DropClient = reinterpret_cast<SV_DropClient_t>(0x82206880);
