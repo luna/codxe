@@ -167,11 +167,6 @@ g_scr_main::g_scr_main()
     Scr_AddMethod("sprintbuttonpressed", PlayerCmd_SprintButtonPressed, BUILTIN_ANY);
 
     Scr_AddMethod("setplayervelocity", PlayerCmd_SetPlayerVelocity, BUILTIN_ANY);
-
-    // entity fields
-    // noclip, ufo, flags
-
-    // move forward,left,right,back buttonpressed
 }
 
 g_scr_main::~g_scr_main()

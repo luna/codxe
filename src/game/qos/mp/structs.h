@@ -67,7 +67,9 @@ struct gclient_s
     int buttons;
     char pad1[8];
     int buttonsSinceLastFrame;
+    char pad2[256];
 };
+static_assert(sizeof(gclient_s) == 13540, "");
 static_assert(offsetof(gclient_s, noclip) == 13252, "");
 static_assert(offsetof(gclient_s, ufo) == 13256, "");
 static_assert(offsetof(gclient_s, buttons) == 13268, "");
@@ -175,6 +177,37 @@ struct PlayerKeyState
     LocSelInputState locSelInputState;
 };
 static_assert(sizeof(PlayerKeyState) == 0xD28, "");
+
+// TODO: TBC...
+enum fieldtype_t : __int32
+{
+    F_INT = 0x0,
+};
+
+enum scr_classnum_t : __int32
+{
+    CLASS_NUM_ENTITY = 0x0,
+    CLASS_NUM_HUDELEM = 0x1,
+};
+
+struct client_fields_s
+{
+    const char *name;
+    int ofs;
+    fieldtype_t type;
+    void (*setter)(gclient_s *pSelf, const client_fields_s *pField);
+    void (*getter)(gclient_s *pSelf, const client_fields_s *pField);
+};
+static_assert(sizeof(client_fields_s) == 20, "");
+
+struct ent_field_t
+{
+    const char *name;
+    int ofs;
+    fieldtype_t type;
+    void(__fastcall *callback)(gentity_s *, int);
+};
+static_assert(sizeof(ent_field_t) == 16, "");
 
 } // namespace mp
 } // namespace qos
