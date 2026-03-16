@@ -1,0 +1,89 @@
+# CoDxe 007: Quantum of Solace
+
+## Multiplayer
+
+### General Functions
+
+#### `exec(string <command>)`
+
+Executes the given command on server as console command.
+
+Usage example: `exec("fast_restart");`
+
+### Player Methods
+
+#### `ButtonPressed(string <button>)`
+
+A host-only method to check if any button is pressed by key name.
+
+Usage example: `self ButtonPressed("DPAD_DOWN") { ... }`
+
+#### `ADSButtonPressed()`
+
+Usage example: `if (self ADSButtonPressed()) { ... }`
+
+#### `JumpButtonPressed()`
+
+Usage example: `if (self JumpButtonPressed()) { ... }`
+
+#### `MeleeButtonPressed()`
+
+Usage example: `if (self MeleeButtonPressed()) { ... }`
+
+#### `NextFireTypeButtonPressed()`
+
+On console this is binded to DPAD_UP and is used to control auto vs single shot guns.
+
+Usage example: `if (self NextFireTypeButtonPressed()) { ... }`
+
+#### `SprintButtonPressed()`
+
+Usage example: `if (self SprintButtonPressed()) { ... }`
+
+#### `SetVelocity(<vec velocity>)`
+
+Changes current player velocity.
+
+Usage example: `self SetVelocity((0, 0, 300)); // Go up.`
+
+### Client Fields
+
+#### `noclip` _(bool)_
+
+Enables noclip on the player — they can fly freely and pass through walls.
+
+Usage example:
+
+```
+self.noclip = true;         // noclip on
+self.noclip = false;        // noclip off
+self.noclip = !self.noclip; // noclip toggle
+```
+
+#### `ufo` _(bool)_
+
+Enables UFO mode on the player — they can fly freely and pass through walls.
+
+Usage example:
+
+```
+self.ufo = true;        // ufo on
+self.ufo = false;       // ufo off
+self.ufo = !self.ufo;   // ufo toggle
+```
+
+#### `entityflags` _(int, bitflag)_
+
+A bitmask field on the player entity. Individual flags must be toggled with bitwise operators — assigning directly will overwrite all other active flags.
+
+```
+self.entityflags |= 0x1;  // set a flag
+self.entityflags &= ~0x1; // clear a flag
+```
+
+Known values (there are more):
+
+```
+FL_GODMODE      = 0x1,
+FL_DEMI_GODMODE = 0x2,
+```
