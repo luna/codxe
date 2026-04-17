@@ -6,7 +6,7 @@ It supports both physical Xbox 360 consoles and emulation via Xenia.
 
 WHY? As a fun project to explore modding the CoD games I grew up with, and to provide a more flexible and powerful modding experience.
 
-Why the name? CoDxe comes from Call of Duty and Xenon — short, simple, and on brand.
+Why the name? CoDxe comes from Call of Duty and **Xe**non
 
 ## Requirements
 
